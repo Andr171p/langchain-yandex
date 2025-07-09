@@ -10,7 +10,3 @@ class CompletionError(ClientError):
 
 class BadRequest(ClientError):
     pass
-
-
-class OperationError(ClientError):
-    pass
