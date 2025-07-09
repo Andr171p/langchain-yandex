@@ -4,7 +4,7 @@ import asyncio
 
 import aiohttp
 
-from .base import BaseYandexGPTClient
+from .base_client import BaseFoundationModelClient
 from .exceptions import CompletionError, BadRequest
 from .constants import (
     OPERATIONS_ENDPOINT,
@@ -15,7 +15,7 @@ from .constants import (
 )
 
 
-class AsyncYandexGPTClient(BaseYandexGPTClient):
+class AsyncFoundationModelClient(BaseFoundationModelClient):
     async def completion(
             self,
             messages: list[dict[str, str]],

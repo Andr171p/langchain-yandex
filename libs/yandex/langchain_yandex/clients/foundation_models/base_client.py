@@ -1,9 +1,9 @@
 from typing import Any, Optional
 
-from libs.yandex.langchain_yandex.chat_model.constants import YandexGPTModel, URL, ON_REASONING_MODE
+from constants import YandexGPTModel, URL, ON_REASONING_MODE
 
 
-class BaseYandexGPTClient:
+class BaseFoundationModelClient:
     def __init__(
             self,
             folder_id: str,

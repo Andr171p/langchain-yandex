@@ -4,7 +4,7 @@ import time
 
 import requests
 
-from .base import BaseYandexGPTClient
+from .base_client import BaseFoundationModelClient
 from .exceptions import CompletionError, BadRequest
 from .constants import (
     OPERATIONS_ENDPOINT,
@@ -15,7 +15,7 @@ from .constants import (
 )
 
 
-class YandexGPTClient(BaseYandexGPTClient):
+class FoundationModelClient(BaseFoundationModelClient):
     def completion(
             self,
             messages: list[dict[str, str]],

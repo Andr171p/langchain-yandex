@@ -1,11 +1,9 @@
 from enum import StrEnum
 
-LLM_TYPE = "YandexGPT"
 
-
-class YandexGPTModel(StrEnum):
-    LITE = "yandexgpt-lite"
-    PRO = "yandexgpt"
+class FoundationModel(StrEnum):
+    YANDEXGPT_LITE = "yandexgpt-lite"
+    YANDEXGPT_PRO = "yandexgpt"
 
 
 URL = "https://llm.api.cloud.yandex.net/foundationModels/v1"
