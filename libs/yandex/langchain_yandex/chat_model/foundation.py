@@ -57,10 +57,11 @@ class ChatFoundationModel(_BaseFoundationModel, BaseChatModel):
         run_manager: Optional[CallbackManagerForLLMRun] = None,
         **kwargs: Any,
     ) -> ChatResult:
-        if self.streaming:
-            ...
         payload = self._build_payload(messages, stop=stop, **kwargs)
-        response = self._client.completion(**payload)
+        if self.iam_token:
+            response = self._client.completion_async(**payload)
+        else:
+            response = self._client.completion(**payload)
         return create_chat_result(response)
 
     async def _agenerate(
@@ -70,6 +71,9 @@ class ChatFoundationModel(_BaseFoundationModel, BaseChatModel):
         run_manager: Optional[AsyncCallbackManagerForLLMRun] = None,
         **kwargs: Any,
     ) -> ChatResult:
-        ...
-
-    ...
+        payload = self._build_payload(messages, stop=stop, **kwargs)
+        if self.iam_token:
+            response = await self._client.acompletion_async(**payload)
+        else:
+            response = await self._client.acompletion(**payload)
+        return create_chat_result(response)
