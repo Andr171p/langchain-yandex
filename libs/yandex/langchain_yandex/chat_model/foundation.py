@@ -1,18 +1,19 @@
-from typing import Any, Optional
+from typing import Any, Optional, Sequence, Union, Callable
+
+from langchain_core.runnables import Runnable
 from typing_extensions import TypedDict
 
 import json
 import logging
 
 from langchain_core.callbacks import CallbackManagerForLLMRun, AsyncCallbackManagerForLLMRun
-from langchain_core.language_models import BaseChatModel
+from langchain_core.language_models import BaseChatModel, LanguageModelInput
 from langchain_core.messages import BaseMessage
 from langchain_core.outputs import ChatResult
 from langchain_core.tools import BaseTool
 
 from .base import _BaseFoundationModel
 from .utils import (
-    convert_dict_to_message,
     convert_message_to_dict,
     convert_tool_to_dict,
     create_chat_result
@@ -77,3 +78,15 @@ class ChatFoundationModel(_BaseFoundationModel, BaseChatModel):
         else:
             response = await self._client.acompletion(**payload)
         return create_chat_result(response)
+
+    def bind_tools(
+        self,
+        tools: Sequence[
+            Union[dict[str, Any], type, Callable, BaseTool]  # noqa: UP006
+        ],
+        *,
+        tool_choice: Optional[Union[str]] = None,
+        **kwargs: Any,
+    ) -> Runnable[LanguageModelInput, BaseMessage]:
+        formatted_tools = [convert_tool_to_dict(tool) for tool in tools]
+        return super().bind(tools=formatted_tools, **kwargs)

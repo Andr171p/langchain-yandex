@@ -15,7 +15,7 @@ from langchain_core.messages import (
     ToolCall,
 )
 
-from ..clients.foundation.constants import FoundationModel
+from ..clients.foundation import FoundationModel
 
 YANDEXGPT_TYPE = "YandexGPT"
 
