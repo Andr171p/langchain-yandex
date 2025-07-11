@@ -16,7 +16,7 @@ from .constants import (
 
 
 class AsyncFoundationModelClient(BaseFoundationModelClient):
-    async def completion(
+    async def acompletion(
             self,
             messages: list[dict[str, str]],
             tools: Optional[list[dict[str, Any]]] = None,
@@ -47,7 +47,7 @@ class AsyncFoundationModelClient(BaseFoundationModelClient):
         except aiohttp.ClientError as e:
             raise CompletionError(f"Request failed: {e}") from e
 
-    async def completion_async(
+    async def acompletion_async(
             self,
             messages: list[dict[str, str]],
             tools: Optional[list[str]] = None,
@@ -67,7 +67,7 @@ class AsyncFoundationModelClient(BaseFoundationModelClient):
                     data = await response.json()
                     operation_id = data["id"]
                     while True:
-                        status_operation = await self._get_status_operation(session, operation_id)
+                        status_operation = await self._aget_status_operation(session, operation_id)
                         await asyncio.sleep(async_timeout)
                         done = status_operation["done"]
                         if done:
@@ -75,7 +75,7 @@ class AsyncFoundationModelClient(BaseFoundationModelClient):
         except aiohttp.ClientError as e:
             raise CompletionError(f"Request failed: {e}") from e
 
-    async def _get_status_operation(self, session: aiohttp.ClientSession, id: str) -> dict[str, Any]:
+    async def _aget_status_operation(self, session: aiohttp.ClientSession, id: str) -> dict[str, Any]:
         url = f"{OPERATIONS_ENDPOINT}/{id}"
         headers = {"Authorization": f"Bearer {self._iam_token}"}
         async with session.get(url=url, headers=headers) as response:

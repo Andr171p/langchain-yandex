@@ -1,15 +1,28 @@
 from typing import Any, Optional
 
-from constants import YandexGPTModel, URL, ON_REASONING_MODE
+from .constants import FoundationModel, URL, ON_REASONING_MODE
 
 
 class BaseFoundationModelClient:
+    """Base class for pass params to foundation model API client
+
+        :param folder_id: Identifier of cloud catalog with current role ai.languageModels.user or higher
+        :param api_key: API key for send request
+        :param iam_token: Authorization token
+        :param model: Model name to use
+        :param base_url: Base API URL
+        :param temperature: What sampling temperature to use
+        :param max_tokens: Maximum number of tokens to generate
+        :param streaming: Whether to streaming chunk generation ot not
+        :param reasoning: Whether to reasoning or not
+        :param timeout: Timeout for requests
+    """
     def __init__(
             self,
             folder_id: str,
             api_key: Optional[str] = None,
-            iam_key: Optional[str] = None,
-            model: YandexGPTModel = YandexGPTModel.LITE,
+            iam_token: Optional[str] = None,
+            model: FoundationModel = FoundationModel.YANDEXGPT_LITE,
             base_url: str = URL,
             temperature: Optional[float] = None,
             max_tokens: Optional[int] = None,
@@ -18,25 +31,15 @@ class BaseFoundationModelClient:
             timeout: Optional[float] = None
     ) -> None:
         self._folder_id = folder_id
-        """ Identifier of cloud catalog with current role ai.languageModels.user or higher """
         self._api_key = api_key
-        """ API key for send request """
-        self._iam_token = iam_key
-        """ Authorization token """
+        self._iam_token = iam_token
         self._model = model
-        """ Model name to use """
         self._base_url = base_url
-        """ Base API URL """
         self._temperature = temperature
-        """ What sampling temperature to use """
         self._max_tokens = max_tokens
-        """ Maximum number of tokens to generate """
         self._streaming = streaming
-        """ Whether to stream the results or not """
         self._reasoning = reasoning
-        """ Whether to reasoning or not"""
         self._timeout = timeout
-        """ Timeout for request """
 
     @property
     def _model_uri(self) -> str:

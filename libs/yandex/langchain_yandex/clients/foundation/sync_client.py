@@ -1,4 +1,7 @@
-from typing import Any, Optional
+from typing import Any, Optional, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from .async_client import AsyncFoundationModelClient
 
 import time
 
@@ -15,7 +18,7 @@ from .constants import (
 )
 
 
-class FoundationModelClient(BaseFoundationModelClient):
+class SyncFoundationModelClient(BaseFoundationModelClient):
     def completion(
             self,
             messages: list[dict[str, str]],
@@ -80,3 +83,7 @@ class FoundationModelClient(BaseFoundationModelClient):
         headers = {"Authorization": f"Bearer {self._iam_token}"}
         response = session.get(url=url, headers=headers)
         return response.json()
+
+    def as_async(self) -> "AsyncFoundationModelClient":
+        from .async_client import AsyncFoundationModelClient
+        return AsyncFoundationModelClient(self.__dict__)
